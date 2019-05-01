@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.tereshchenko.mapsshabl.models.PlaceInfo;
 
 import com.example.tereshchenko.mapsshabl.models.PlaceInfo;
 import com.google.android.gms.common.ConnectionResult;
@@ -167,15 +168,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("", "onClick: clicked place info");
+                Log.d("onClick", "onClick: clicked place info");
                 try{
                     if(mMarker.isInfoWindowShown()){
                         mMarker.hideInfoWindow();
                     }else{
-                        Log.d("","onClick: place info: "+ mPlace.toString());
+                        Log.d("onClick","onClick: place info: "+ mPlace.toString());
+                        mMarker.showInfoWindow();
                     }
                 }catch (NullPointerException e){
-                    Log.e("","onClick: NullPointerException: "+ e.getMessage());
+                    Log.e("onClick","onClick: NullPointerException: "+ e.getMessage());
                 }
             }
         });
@@ -245,6 +247,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d("", "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         mMap.clear();
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MapsActivity.this ));
         if(placeInfo != null){
             try{
                 String snippet = "Address" + placeInfo.getAddress() + "\n" +
